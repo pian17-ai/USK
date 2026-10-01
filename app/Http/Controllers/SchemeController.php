@@ -9,12 +9,12 @@ class SchemeController extends Controller
 {
     public function index() {
         $schemes = CertificationScheme::all();
-        
+
         return response()->json([
             'status' => 'success',
             'message' => 'Get all scheme successfully',
             'data' => [
-                'candidates' => $schemes
+                'schemes' => $schemes
             ]
         ]);
     }
