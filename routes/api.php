@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CandidateController;
 use App\Http\Controllers\SchemeController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -30,4 +31,6 @@ Route::prefix('/v1')->group(function () {
     Route::post('/schemes', [SchemeController::class, 'store']);
     Route::put('/schemes/{id}', [SchemeController::class, 'update']);
     Route::delete('/schemes/{id}', [SchemeController::class, 'destroy']);
+
+    Route::get('/users', [UserController::class, 'index']);
 });
