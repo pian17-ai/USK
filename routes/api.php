@@ -20,6 +20,7 @@ Route::prefix('/v1')->group(function () {
         });
     });
 
+    Route::middleware('auth:sanctum')->group(function() {
     Route::get('/candidates', [CandidateController::class, 'index']);
     Route::get('/candidates/{id}', [CandidateController::class, 'show']);
     Route::post('/candidates', [CandidateController::class, 'store']);
@@ -37,4 +38,5 @@ Route::prefix('/v1')->group(function () {
     Route::post('/users', [UserController::class, 'store']);
     Route::put('/users/{id}', [UserController::class, 'update']);
     Route::delete('/users/{id}', [UserController::class, 'destroy']);
+});
 });

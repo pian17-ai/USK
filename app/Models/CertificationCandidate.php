@@ -20,4 +20,9 @@ class CertificationCandidate extends Model
     public function certificationScheme() {
         return $this->belongsTo(CertificationScheme::class);
     }
+
+    protected $casts = [
+        'created_at' => 'datetime: d M Y: H:i',
+        'updated_at' => 'datetime: d M Y: H:i'
+    ];
 }

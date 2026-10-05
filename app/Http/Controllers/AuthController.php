@@ -14,7 +14,7 @@ class AuthController extends Controller
             'username' => 'required',
             'password' => 'required|min:6'
         ]);
-        
+
         $checkAlready = User::where('username', $validated['username'])->exists();
 
         if ($checkAlready) {
@@ -34,11 +34,7 @@ class AuthController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Register successfully',
-            'data' => [
-                'token' => $token,
-                'user' => $user
-            ]
+            'message' => 'Register successfully'
         ]);
     }
 

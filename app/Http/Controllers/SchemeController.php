@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\SchemeResource;
 use App\Models\CertificationScheme;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,7 @@ class SchemeController extends Controller
             'status' => 'success',
             'message' => 'Get all scheme successfully',
             'data' => [
-                'schemes' => $schemes
+                'schemes' => SchemeResource::collection($schemes),
             ]
         ]);
     }
@@ -33,7 +34,7 @@ class SchemeController extends Controller
             'status' => 'success',
             'message' => 'Get scheme successfully',
             'data' => [
-                'scheme' => $scheme
+                'scheme' => new SchemeResource($scheme)
             ]
         ]);
     }
