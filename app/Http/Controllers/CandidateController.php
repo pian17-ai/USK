@@ -11,7 +11,7 @@ class CandidateController extends Controller
 {
     public function index() {
         $candidates = CertificationCandidate::all();
-        
+
         return response()->json([
             'status' => 'success',
             'message' => 'Get all candidate successfully',
@@ -42,9 +42,9 @@ class CandidateController extends Controller
 
     public function store(Request $request) {
         $validated = $request->validate([
-            'full_name' => 'required',
-            'email' => 'required',
-            'phone_number' => 'required',
+            'full_name' => 'required|regex:/^[a-zA-Z]+$/',
+            'email' => 'required|email',
+            'phone_number' => 'required|regex:/^[0-9]+$/',
             'born_date' => 'required|date',
             'gender' => 'required',
             'address' => 'required',
@@ -54,7 +54,7 @@ class CandidateController extends Controller
         $scheme = CertificationScheme::where('id', $validated['certification_scheme_id'])->first();
 
         $candidate = CertificationCandidate::create([
-            'candidate_number' => rand(1000, 9999) . "-" . $scheme->scheme_code,
+            'candidate_number' => rand(100000, 999999),
             'full_name' => $validated['full_name'],
             'email' => $validated['email'],
             'phone_number' => $validated['phone_number'],
@@ -75,9 +75,9 @@ class CandidateController extends Controller
 
     public function update(Request $request, string $id) {
         $validated = $request->validate([
-            'full_name' => 'nullable',
-            'email' => 'nullable',
-            'phone_number' => 'nullable',
+            'full_name' => 'nullable|regex:/^[a-zA-Z]+$/',
+            'email' => 'nullable|email',
+            'phone_number' => 'nullable|regex:/^[0-9]+$/',
             'born_date' => 'nullable|date',
             'gender' => 'nullable',
             'address' => 'nullable',
