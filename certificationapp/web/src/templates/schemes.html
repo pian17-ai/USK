@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Certification Scheme - Certification App</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        background: #f5f6f8;
+      }
+
+      .sidebar {
+        min-height: 100vh;
+        background: #212529;
+      }
+
+      .brand {
+        color: white;
+        font-size: 20px;
+        font-weight: 600;
+      }
+
+      .sidebar .nav-link {
+        color: #adb5bd;
+        padding: 10px 14px;
+        border-radius: 8px;
+        margin-bottom: 5px;
+      }
+
+      .sidebar .nav-link:hover,
+      .sidebar .nav-link.active {
+        background: #343a40;
+        color: white;
+      }
+
+      .content {
+        min-height: 100vh;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <!-- SIDEBAR -->
+        <div class="col-md-3 col-lg-2 sidebar p-3">
+          <div class="brand mb-4">Certification App</div>
+
+          <div class="nav flex-column">
+            <a href="dashboard.html" class="nav-link"> Dashboard </a>
+
+            <a href="candidates.html" class="nav-link"> Peserta </a>
+
+            <a href="schemes.html" class="nav-link active">
+              Certification Scheme
+            </a>
+
+            <a href="users.html" class="nav-link"> Users </a>
+          </div>
+        </div>
+
+        <!-- CONTENT -->
+        <div class="col-md-9 col-lg-10 content p-4">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+              <h3 class="fw-bold mb-1">Certification Scheme</h3>
+
+              <p class="text-muted mb-0">Kelola scheme sertifikasi</p>
+            </div>
+
+            <button class="btn btn-primary">+ Tambah Scheme</button>
+          </div>
+
+          <div class="card border-0 shadow-sm">
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                  <thead>
+                    <tr>
+                      <th>No</th>
+                      <th>Scheme Code</th>
+                      <th>Scheme Name</th>
+                      <th>Deskripsi</th>
+                      <th>Jumlah Peserta</th>
+                      <th>Aksi</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    <tr>
+                      <td>1</td>
+
+                      <td>
+                        <span class="badge text-bg-primary"> WD-001 </span>
+                      </td>
+
+                      <td>Web Developer</td>
+
+                      <td>Sertifikasi kompetensi pengembangan aplikasi web.</td>
+
+                      <td>45 peserta</td>
+
+                      <td class="text-nowrap">
+                        <button class="btn btn-warning btn-sm">Edit</button>
+
+                        <button class="btn btn-danger btn-sm">Hapus</button>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td>2</td>
+
+                      <td>
+                        <span class="badge text-bg-success"> DB-001 </span>
+                      </td>
+
+                      <td>Database Administrator</td>
+
+                      <td>Sertifikasi pengelolaan database.</td>
+
+                      <td>30 peserta</td>
+
+                      <td class="text-nowrap">
+                        <button class="btn btn-warning btn-sm">Edit</button>
+
+                        <button class="btn btn-danger btn-sm">Hapus</button>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td>3</td>
+
+                      <td>
+                        <span class="badge text-bg-info"> NW-001 </span>
+                      </td>
+
+                      <td>Network Administrator</td>
+
+                      <td>Sertifikasi kompetensi administrasi jaringan.</td>
+
+                      <td>25 peserta</td>
+
+                      <td class="text-nowrap">
+                        <button class="btn btn-warning btn-sm">Edit</button>
+
+                        <button class="btn btn-danger btn-sm">Hapus</button>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td>4</td>
+
+                      <td>
+                        <span class="badge text-bg-warning"> CY-001 </span>
+                      </td>
+
+                      <td>Cyber Security</td>
+
+                      <td>Sertifikasi keamanan sistem informasi.</td>
+
+                      <td>20 peserta</td>
+
+                      <td class="text-nowrap">
+                        <button class="btn btn-warning btn-sm">Edit</button>
+
+                        <button class="btn btn-danger btn-sm">Hapus</button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

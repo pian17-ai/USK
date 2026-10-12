@@ -1,0 +1,191 @@
+import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
+import useUser from "../../hooks/useUser";
+import type { UserPayload, UserState } from "../../types/user.type";
+
+function UserPage() {
+  const { users, getUsers, addUser, changeUser, deleteUser } = useUser();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
+  const [idEdit, setIdEdit] = useState(0);
+
+  const [form, setForm] = useState<UserPayload>({
+    full_name: "",
+    username: "",
+    password: "",
+  });
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value
+    })
+  }
+
+  const handleSubmit = async(e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (isEdit) {
+      await changeUser(form, idEdit);
+    } else {
+      await addUser(form);
+    }
+
+    getUsers();
+    handleClose();
+  }
+
+  const handleAdd = () => {
+    setIsEdit(false);
+    setIsModalOpen(true);
+  }
+
+  const handleEdit = async(user: UserState) => {
+    setIsEdit(true);
+    setIsModalOpen(true);
+    setIdEdit(user.id);
+    setForm({
+      full_name: user.full_name,
+      username: user.username,
+      password: ""
+    });
+  }
+
+  const handleDelete = async(id: number) => {
+    if(confirm("Are you sure delete this data?")) {
+      await deleteUser(id);
+    }
+
+    getUsers();
+  }
+
+  const handleClose = () => {
+    setIsEdit(false);
+    setIsModalOpen(false);
+    setIdEdit(0);
+    setForm({
+      full_name: "",
+      username: "",
+      password: ""
+    });
+  }
+
+  useEffect(() => {
+    getUsers();
+  }, []);
+  return (
+    <div className="col-md-9 col-lg-10 content p-4">
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <div>
+          <h3 className="fw-bold mb-1">Users</h3>
+
+          <p className="text-muted mb-0">Kelola pengguna sistem</p>
+        </div>
+
+        {!isModalOpen && (
+          <button
+            onClick={() => handleAdd()}
+            className="btn btn-primary"
+          >
+            + Tambah User
+          </button>
+        )}
+      </div>
+
+      {isModalOpen && (
+        <form onSubmit={handleSubmit}>
+          <div className="mb-3">
+            <label className="form-label fw-semibold">Nama Lengkap</label>
+
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Masukkan nama lengkap"
+              name="full_name"
+              id="full_name"
+              value={form.full_name}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className="mb-3">
+            <label className="form-label fw-semibold">Username</label>
+
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Masukkan username"
+              name="username"
+              id="username"
+              value={form.username}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className="mb-4">
+            <label className="form-label fw-semibold">Password</label>
+
+            <input
+              type="password"
+              className="form-control"
+              placeholder="Masukkan password"
+              name="password"
+              id="password"
+              value={form.password}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className="d-flex gap-2">
+            <button
+              onClick={() => handleClose()}
+              className="btn btn-secondary"
+            >
+              Kembali
+            </button>
+
+            <button type="submit" className="btn btn-primary">
+              Simpan User
+            </button>
+          </div>
+        </form>
+      )}
+
+      <div className="card border-0 shadow-sm mt-4">
+        <div className="card-body">
+          <div className="table-responsive">
+            <table className="table table-hover align-middle">
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>Nama</th>
+                  <th>Username</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {users.map((user) => (
+                  <tr>
+                    <td>{user.id}</td>
+
+                    <td>{user.full_name}</td>
+
+                    <td>{user.username}</td>
+
+                    <td className="text-nowrap">
+                      <button onClick={() => handleEdit(user)} className="btn btn-warning btn-sm">Edit</button>
+
+                      <button onClick={() => handleDelete(user.id)} className="btn btn-danger btn-sm mx-3">Hapus</button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default UserPage;
