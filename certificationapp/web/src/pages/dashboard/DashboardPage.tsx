@@ -3,11 +3,13 @@ import useCandidate from "../../hooks/useCandidate";
 import useScheme from "../../hooks/useScheme";
 import useUser from "../../hooks/useUser";
 import { Link } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
 
 function DashboardPage() {
   const { candidates, getCandidates } = useCandidate();
   const { schemes, getSchemes } = useScheme();
   const { users, getUsers } = useUser();
+  const { user } = useAuth();
 
   useEffect(() => {
     (getUsers(), getCandidates(), getSchemes());
@@ -23,7 +25,7 @@ function DashboardPage() {
         </div>
 
         <div>
-          <span className="fw-semibold">Admin Utama</span>
+          <span className="fw-semibold">Hello {user?.full_name}</span>
         </div>
       </div>
 

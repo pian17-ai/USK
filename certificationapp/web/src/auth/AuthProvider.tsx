@@ -23,7 +23,7 @@ export default function AuthProvider({ children }: AuthProviderProps) {
   }
 
   const login = (userData: ApiResponse<LoginResponse>) => {
-    localStorage.setItem("user", JSON.stringify(userData));
+    localStorage.setItem("user", JSON.stringify(userData.data?.user));
     localStorage.setItem("token", userData.data!.token);
     setUser(userData.data!.user);
   };
