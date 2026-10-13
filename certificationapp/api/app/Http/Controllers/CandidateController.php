@@ -9,7 +9,8 @@ use Illuminate\Http\Request;
 
 class CandidateController extends Controller
 {
-    public function index() {
+    public function index()
+    {
         $candidates = CertificationCandidate::all();
 
         return response()->json([
@@ -21,7 +22,8 @@ class CandidateController extends Controller
         ]);
     }
 
-    public function show(Request $request, string $id) {
+    public function show(string $id)
+    {
         $candidate = CertificationCandidate::where('id', $id)->first();
 
         if (!$candidate) {
@@ -40,27 +42,41 @@ class CandidateController extends Controller
         ]);
     }
 
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         $validated = $request->validate([
-            'full_name' => 'required|regex:/^[a-zA-Z]+$/',
+            'full_name' => 'required|regex:/^[a-zA-Z]{1,50}+$/',
+            'nik' => 'required|integer|regex:/^[0-9]{16,16}+$/',
             'email' => 'required|email',
-            'phone_number' => 'required|regex:/^[0-9]+$/',
+            'phone_number' => 'required|integer|regex:/^[0-9]{11,13}+$/',
             'born_date' => 'required|date',
             'gender' => 'required',
             'address' => 'required',
-            'certification_scheme_id' => 'required|exists:certification_schemes,id'
+            'user_id' => 'required|exists:users,id',
+            'certification_scheme_id' => 'nullable|exists:certification_schemes,id'
         ]);
 
-        $scheme = CertificationScheme::where('id', $validated['certification_scheme_id'])->first();
+        if ($validated['certification_scheme_id'] !== null) {
+            $scheme = CertificationScheme::where('id', $validated['certification_scheme_id'])->first();
+
+            if (!$scheme) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Certification Scheme not found'
+                ], 404);
+            }
+        }
+
 
         $candidate = CertificationCandidate::create([
-            'candidate_number' => rand(100000, 999999),
             'full_name' => $validated['full_name'],
+            'nik' => $validated['nik'],
             'email' => $validated['email'],
             'phone_number' => $validated['phone_number'],
             'born_date' => $validated['born_date'],
             'gender' => $validated['gender'],
             'address' => $validated['address'],
+            'user_id' => $validated['user_id'],
             'certification_scheme_id' => $validated['certification_scheme_id'],
         ]);
 
@@ -73,14 +89,17 @@ class CandidateController extends Controller
         ], 201);
     }
 
-    public function update(Request $request, string $id) {
+    public function update(Request $request, string $id)
+    {
         $validated = $request->validate([
-            'full_name' => 'nullable|regex:/^[a-zA-Z]+$/',
+            'full_name' => 'nullable|regex:/^[a-zA-Z]{1,50}+$/',
+            'nik' => 'nullable|integer|regex:/^[0-9]{16,16}+$/',
             'email' => 'nullable|email',
-            'phone_number' => 'nullable|regex:/^[0-9]+$/',
+            'phone_number' => 'nullable|integer|regex:/^[0-9]{11,13}+$/',
             'born_date' => 'nullable|date',
             'gender' => 'nullable',
             'address' => 'nullable',
+            'user_id' => 'nullable|exists:users,id',
             'certification_scheme_id' => 'nullable|exists:certification_schemes,id'
         ]);
 
@@ -104,7 +123,8 @@ class CandidateController extends Controller
         ], 200);
     }
 
-    public function destroy(string $id) {
+    public function destroy(string $id)
+    {
         $candidate = CertificationCandidate::where('id', $id)->first();
 
         if (!$candidate) {

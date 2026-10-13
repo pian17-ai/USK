@@ -9,8 +9,8 @@ function UserPage() {
   const [idEdit, setIdEdit] = useState(0);
 
   const [form, setForm] = useState<UserPayload>({
-    full_name: "",
     username: "",
+    role: "",
     password: "",
   });
 
@@ -21,7 +21,7 @@ function UserPage() {
     })
   }
 
-  const handleSubmit = async(e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (isEdit) {
@@ -39,19 +39,19 @@ function UserPage() {
     setIsModalOpen(true);
   }
 
-  const handleEdit = async(user: UserState) => {
+  const handleEdit = async (user: UserState) => {
     setIsEdit(true);
     setIsModalOpen(true);
     setIdEdit(user.id);
     setForm({
-      full_name: user.full_name,
       username: user.username,
+      role: user.role,
       password: ""
     });
   }
 
-  const handleDelete = async(id: number) => {
-    if(confirm("Are you sure delete this data?")) {
+  const handleDelete = async (id: number) => {
+    if (confirm("Are you sure delete this data?")) {
       await deleteUser(id);
     }
 
@@ -63,8 +63,8 @@ function UserPage() {
     setIsModalOpen(false);
     setIdEdit(0);
     setForm({
-      full_name: "",
       username: "",
+      role: "",
       password: ""
     });
   }
@@ -102,7 +102,7 @@ function UserPage() {
               placeholder="Masukkan nama lengkap"
               name="full_name"
               id="full_name"
-              value={form.full_name}
+              value={form.username}
               onChange={handleChange}
             />
           </div>
@@ -116,7 +116,7 @@ function UserPage() {
               placeholder="Masukkan username"
               name="username"
               id="username"
-              value={form.username}
+              value={form.role}
               onChange={handleChange}
             />
           </div>
@@ -157,8 +157,8 @@ function UserPage() {
               <thead>
                 <tr>
                   <th>No</th>
-                  <th>Nama</th>
                   <th>Username</th>
+                  <th>Role</th>
                   <th>Aksi</th>
                 </tr>
               </thead>
@@ -168,9 +168,9 @@ function UserPage() {
                   <tr>
                     <td>{user.id}</td>
 
-                    <td>{user.full_name}</td>
-
                     <td>{user.username}</td>
+
+                    <td>{user.role}</td>
 
                     <td className="text-nowrap">
                       <button onClick={() => handleEdit(user)} className="btn btn-warning btn-sm">Edit</button>

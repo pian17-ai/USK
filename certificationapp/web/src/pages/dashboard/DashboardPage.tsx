@@ -95,11 +95,14 @@ function DashboardPage() {
                 {candidates.map((candidate) => (
                   <tr>
                     <td>1</td>
-                    <td>{candidate.candidate_number}</td>
+                    <td>{candidate.nik}</td>
                     <td>{candidate.full_name}</td>
                     <td>{candidate.email}</td>
                     <td>
-                      <span className="badge bg-primary">{candidate.certification_scheme.scheme_name}</span>
+                      <span className="badge bg-primary">
+                        {
+                          candidate.certification_scheme?.scheme_code || "-"}
+                      </span>
                     </td>
                   </tr>
                 ))}

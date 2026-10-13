@@ -21,7 +21,7 @@ function RegisterPage() {
     })
   }
 
-  const handleSubmit = async(e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     await register(form);

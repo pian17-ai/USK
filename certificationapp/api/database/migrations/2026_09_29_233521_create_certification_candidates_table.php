@@ -13,14 +13,15 @@ return new class extends Migration
     {
         Schema::create('certification_candidates', function (Blueprint $table) {
             $table->id();
-            $table->string('candidate_number');
             $table->string('full_name');
+            $table->bigInteger('nik');
             $table->string('email');
-            $table->string('phone_number');
+            $table->bigInteger('phone_number');
             $table->date('born_date');
             $table->enum('gender', ['male', 'female']);
             $table->text('address');
-            $table->foreignId('certification_scheme_id')->constrained('certification_schemes');
+            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('certification_scheme_id')->nullable()->constrained('certification_schemes');
             $table->timestamps();
         });
     }

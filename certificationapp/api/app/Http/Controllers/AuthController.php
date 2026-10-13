@@ -8,9 +8,9 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    public function register(Request $request) {
+    public function register(Request $request)
+    {
         $validated = $request->validate([
-            'full_name' => 'required',
             'username' => 'required',
             'password' => 'required|min:6'
         ]);
@@ -25,7 +25,6 @@ class AuthController extends Controller
         }
 
         $user = User::create([
-            'full_name' => $validated['full_name'],
             'username' => $validated['username'],
             'password' => $validated['password']
         ]);
@@ -38,7 +37,8 @@ class AuthController extends Controller
         ]);
     }
 
-    public function login(Request $request) {
+    public function login(Request $request)
+    {
         $validated = $request->validate([
             'username' => 'required',
             'password' => 'required'
@@ -65,7 +65,8 @@ class AuthController extends Controller
         ]);
     }
 
-    public function logout(Request $request) {
+    public function logout(Request $request)
+    {
         $user = $request->user();
 
         $user->tokens()->delete();

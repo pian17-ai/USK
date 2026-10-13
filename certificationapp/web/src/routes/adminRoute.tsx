@@ -9,31 +9,31 @@ import UserPage from "../pages/dashboard/UserPage";
 export const adminRoute = [
   {
     path: "/",
-    element: <AdminLayout/>,
+    element: <AdminLayout />,
     children: [
       {
         path: "",
-        element: <DashboardPage/>,
+        element: <DashboardPage />,
       },
       {
         path: "candidate",
-        element: <CandidatePage/>,
-      },  
+        element: <CandidatePage />,
+      },
       {
         path: "scheme",
-        element: <SchemePage/>,
+        element: <SchemePage />,
       },
       {
         path: "user",
-        element: <UserPage/>,
+        element: <UserPage />,
       },
       {
         path: "candidate/:id",
-        element: <CandidateShowPage/>
+        element: <CandidateShowPage />,
       },
       {
         path: "scheme/:id",
-        element: <SchemeShowPage/>
+        element: <SchemeShowPage />,
       },
     ],
   },

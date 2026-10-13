@@ -8,7 +8,8 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    public function index() {
+    public function index()
+    {
         $users = User::all();
 
         return response()->json([
@@ -20,7 +21,8 @@ class UserController extends Controller
         ]);
     }
 
-    public function show(string $id) {
+    public function show(string $id)
+    {
         $user = User::where('id', $id)->first();
 
         if (!$user) {
@@ -39,9 +41,9 @@ class UserController extends Controller
         ]);
     }
 
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         $validated = $request->validate([
-            'full_name' => 'required',
             'username' => 'required',
             'password' => 'required'
         ]);
@@ -70,7 +72,8 @@ class UserController extends Controller
         ], 201);
     }
 
-    public function update(Request $request, string $id) {
+    public function update(Request $request, string $id)
+    {
         $validated = $request->validate([
             'full_name' => 'required',
             'username' => 'required',
@@ -101,10 +104,11 @@ class UserController extends Controller
         ]);
     }
 
-    public function destroy(string $id) {
+    public function destroy(string $id)
+    {
         $user = User::where('id', $id)->first();
 
-        if(!$user) {
+        if (!$user) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'User not found'

@@ -16,13 +16,14 @@ class CandidateResource extends JsonResource
     {
         return  [
             'id' => $this->id,
-            'candidate_number' => $this->candidate_number,
             'full_name' => $this->full_name,
+            'nik' => $this->nik,
             'email' => $this->email,
             'phone_number' => $this->phone_number,
             'born_date' => $this->born_date,
             'gender' => $this->gender,
             'address' => $this->address,
+            'user_id' => $this->user_id,
             'certification_scheme' => $this->certificationScheme,
             'created_at' => $this->created_at->translatedFormat('d M Y: H:i'),
             'updated_at' => $this->updated_at->translatedFormat('d M Y: H:i')

@@ -7,18 +7,26 @@ use Illuminate\Database\Eloquent\Model;
 
 #[Fillable([
     'candidate_number',
+    'nik',
     'full_name',
     'email',
     'phone_number',
     'born_date',
     'gender',
     'address',
+    'user_id',
     'certification_scheme_id'
 ])]
 class CertificationCandidate extends Model
 {
-    public function certificationScheme() {
+    public function certificationScheme()
+    {
         return $this->belongsTo(CertificationScheme::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
     protected $casts = [

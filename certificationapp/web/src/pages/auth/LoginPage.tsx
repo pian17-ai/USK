@@ -1,5 +1,5 @@
 import { useState, type ChangeEvent, type FormEvent } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import type { LoginPayload } from "../../types/auth.type";
 import { loginAPI } from "../../services/authService";
 import useAuth from "../../hooks/useAuth";
@@ -12,11 +12,16 @@ function LoginPage() {
     password: "",
   });
 
-  const handleSubmit = async(e: FormEvent<HTMLFormElement>) => {
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const res = await loginAPI(form);
-    login(res.data);
+    if (res) {
+      login(res.data);
+      navigate('/');
+    }
   };
 
   const handleChanges = (

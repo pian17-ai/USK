@@ -20,23 +20,23 @@ Route::prefix('/v1')->group(function () {
         });
     });
 
-    // Route::middleware('auth:sanctum')->group(function () {
-        Route::get('/candidates', [CandidateController::class, 'index']);
-        Route::get('/candidates/{id}', [CandidateController::class, 'show']);
-        Route::post('/candidates', [CandidateController::class, 'store']);
-        Route::put('/candidates/{id}', [CandidateController::class, 'update']);
-        Route::delete('/candidates/{id}', [CandidateController::class, 'destroy']);
+    // Route::middleware('auth:sanctum', 'admin')->group(function () {
+    Route::get('/candidates', [CandidateController::class, 'index']);
+    Route::get('/candidates/{id}', [CandidateController::class, 'show']);
+    Route::post('/candidates', [CandidateController::class, 'store']);
+    Route::put('/candidates/{id}', [CandidateController::class, 'update']);
+    Route::delete('/candidates/{id}', [CandidateController::class, 'destroy']);
 
-        Route::get('/schemes', [SchemeController::class, 'index']);
-        Route::get('/schemes/{id}', [SchemeController::class, 'show']);
-        Route::post('/schemes', [SchemeController::class, 'store']);
-        Route::put('/schemes/{id}', [SchemeController::class, 'update']);
-        Route::delete('/schemes/{id}', [SchemeController::class, 'destroy']);
+    Route::get('/schemes', [SchemeController::class, 'index']);
+    Route::get('/schemes/{id}', [SchemeController::class, 'show']);
+    Route::post('/schemes', [SchemeController::class, 'store']);
+    Route::put('/schemes/{id}', [SchemeController::class, 'update']);
+    Route::delete('/schemes/{id}', [SchemeController::class, 'destroy']);
 
-        Route::get('/users', [UserController::class, 'index']);
-        Route::get('/users/{id}', [UserController::class, 'show']);
-        Route::post('/users', [UserController::class, 'store']);
-        Route::put('/users/{id}', [UserController::class, 'update']);
-        Route::delete('/users/{id}', [UserController::class, 'destroy']);
+    Route::get('/users', [UserController::class, 'index']);
+    Route::get('/users/{id}', [UserController::class, 'show']);
+    Route::post('/users', [UserController::class, 'store']);
+    Route::put('/users/{id}', [UserController::class, 'update']);
+    Route::delete('/users/{id}', [UserController::class, 'destroy']);
     // });
 });

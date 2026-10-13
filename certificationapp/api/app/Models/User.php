@@ -11,7 +11,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-#[Fillable(['full_name', 'username', 'password'])]
+#[Fillable(['username', 'password', 'role'])]
 #[Hidden(['password'])]
 class User extends Authenticatable
 {
@@ -29,5 +29,10 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function certificationCandidate()
+    {
+        return $this->hasOne(User::class);
     }
 }

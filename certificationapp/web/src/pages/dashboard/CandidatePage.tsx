@@ -24,15 +24,17 @@ function CandidatePage() {
 
   const [form, setForm] = useState<CandidatePayload>({
     full_name: "",
+    nik: 0,
     email: "",
     phone_number: "",
     born_date: "",
     gender: "",
     address: "",
+    user_id: 0,
     certification_scheme_id: 0,
   });
 
-  const filteredCandidates = candidates.filter((candidate) => 
+  const filteredCandidates = candidates.filter((candidate) =>
     candidate.full_name.toLowerCase().includes(search.toLowerCase()) ||
     candidate.email.toLowerCase().includes(search.toLowerCase())
   );
@@ -72,12 +74,14 @@ function CandidatePage() {
     setIdEdit(candidate.id);
     setForm({
       full_name: candidate.full_name,
+      nik: candidate.nik,
       email: candidate.email,
       phone_number: candidate.phone_number,
       born_date: candidate.born_date,
       gender: candidate.gender,
       address: candidate.address,
-      certification_scheme_id: candidate.certification_scheme.id,
+      user_id: candidate.user_id,
+      certification_scheme_id: candidate.certification_scheme!.id,
     });
   };
 
@@ -94,11 +98,13 @@ function CandidatePage() {
     setIdEdit(0);
     setForm({
       full_name: "",
+      nik: 0,
       email: "",
       phone_number: "",
       born_date: "",
       gender: "",
       address: "",
+      user_id: 0,
       certification_scheme_id: 0,
     });
   };
@@ -245,7 +251,7 @@ function CandidatePage() {
         </form>
       )}
 
-       <div className="card border-0 shadow-sm my-4">
+      <div className="card border-0 shadow-sm my-4">
         <div className="card-body">
           <div className="row g-2">
             <div className="col-md">
@@ -300,7 +306,7 @@ function CandidatePage() {
                     <td>{candidate.phone_number}</td>
                     <td>{candidate.born_date}</td>
                     <td>{candidate.gender}</td>
-                    <td>{candidate.certification_scheme.scheme_name}</td>
+                    <td>{candidate.certification_scheme?.scheme_name || "-"}</td>
                     <td className="text-nowrap">
                       <Link
                         to={`/candidate/${candidate.id}`}

@@ -1,7 +1,7 @@
 export type UserState = {
     id: number;
-    full_name: string;
     username: string;
+    role: string;
     created_at: string;
     updated_at: string;
 }
@@ -15,7 +15,7 @@ export type UserResponse = {
 }
 
 export type UserPayload = {
-    full_name: string;
     username: string;
+    role: string;
     password: string;
 }
