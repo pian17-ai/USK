@@ -1,3 +1,5 @@
+import type { CandidateState } from "./candidate.type";
+
 export type UserState = {
     id: number;
     username: string;
@@ -12,6 +14,7 @@ export type UsersResponse = {
 
 export type UserResponse = {
     user: UserState;
+    candidate: CandidateState;
 }
 
 export type UserPayload = {

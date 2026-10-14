@@ -25,7 +25,7 @@ function DashboardPage() {
         </div>
 
         <div>
-          <span className="fw-semibold">Hello {user?.full_name}</span>
+          <span className="fw-semibold">Hello {user?.username}</span>
         </div>
       </div>
 

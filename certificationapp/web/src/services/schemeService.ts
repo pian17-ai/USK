@@ -21,3 +21,7 @@ export const updateScheme = (payload: SchemePayload, id: number) => {
 export const destroyScheme = (id: number) => {
     return api.delete(`/schemes/${id}`)
 }
+
+export const applySchemeAPI = (id: number | string) => {
+    return api.put(`/schemes/apply/${id}`);
+}

@@ -1,7 +1,11 @@
 import { useState } from "react";
 import type { UserState } from "../types/user.type";
 import AuthContext from "./AuthContext";
-import type { AuthProviderProps, LoginResponse, RegisterPayload } from "../types/auth.type";
+import type {
+  AuthProviderProps,
+  LoginResponse,
+  RegisterPayload,
+} from "../types/auth.type";
 import { logoutAPI, registerAPI } from "../services/authService";
 import type { ApiResponse } from "../types/response.type";
 
@@ -14,18 +18,21 @@ export default function AuthProvider({ children }: AuthProviderProps) {
     }
   });
 
-  const register = async(payload: RegisterPayload) => {
+  const register = async (payload: RegisterPayload) => {
     try {
-      await registerAPI(payload);
+      const res = await registerAPI(payload);
+      localStorage.setItem("user", JSON.stringify(res.data.data?.user));
+      localStorage.setItem("token", res.data.data!.token);
+      setUser(res.data.data!.user && null);
     } catch (err) {
       console.error(err);
     }
-  }
+  };
 
   const login = (userData: ApiResponse<LoginResponse>) => {
     localStorage.setItem("user", JSON.stringify(userData.data?.user));
     localStorage.setItem("token", userData.data!.token);
-    setUser(userData.data!.user);
+    setUser(userData.data!.user && null);
   };
 
   const logout = async () => {

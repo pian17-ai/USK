@@ -102,7 +102,7 @@ function SchemePage() {
                 onChange={handleChange}
                 type="text"
                 className="form-control"
-                placeholder="Contoh: WD-002"
+                placeholder="Contoh: WD"
                 name="scheme_code"
                 value={form.scheme_code}
               />

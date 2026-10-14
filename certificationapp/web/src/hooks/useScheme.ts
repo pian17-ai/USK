@@ -1,5 +1,6 @@
 import { useCallback, useState } from "react";
 import {
+  applySchemeAPI,
   destroyScheme,
   indexScheme,
   showScheme,
@@ -77,6 +78,17 @@ export default function useScheme() {
     }
   }, []);
 
+  const applyScheme = useCallback( async(id: number | string) => {
+    try {
+      setLoading(true);
+      await applySchemeAPI(id);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
   return {
     loading,
     schemes,
@@ -87,5 +99,6 @@ export default function useScheme() {
     addScheme,
     changeScheme,
     deleteScheme,
+    applyScheme
   };
 }

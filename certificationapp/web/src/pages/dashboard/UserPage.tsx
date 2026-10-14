@@ -94,7 +94,7 @@ function UserPage() {
       {isModalOpen && (
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
-            <label className="form-label fw-semibold">Nama Lengkap</label>
+            <label className="form-label fw-semibold">Username</label>
 
             <input
               type="text"
@@ -108,14 +108,14 @@ function UserPage() {
           </div>
 
           <div className="mb-3">
-            <label className="form-label fw-semibold">Username</label>
+            <label className="form-label fw-semibold">Role</label>
 
             <input
               type="text"
               className="form-control"
-              placeholder="Masukkan username"
-              name="username"
-              id="username"
+              placeholder="Masukkan role ('admin' atau 'user')"
+              name="role"
+              id="role"
               value={form.role}
               onChange={handleChange}
             />

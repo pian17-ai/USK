@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
-import type { CandidatePayload, CandidateState } from "../types/candidate.type";
-import { destroyCandidate, indexCandidate, showCandidate, storeCandidate, updateCandidate } from "../services/candidateService";
+import type { CandidatePayload, CandidateState, UpdateProfilePayload } from "../types/candidate.type";
+import { destroyCandidate, indexCandidate, showCandidate, storeCandidate, updateCandidate, updateProfileAPI } from "../services/candidateService";
 
 export default function useCandidate() {
     const [loading, setLoading] = useState(true);
@@ -65,6 +65,17 @@ export default function useCandidate() {
         }
     }, []);
 
+    const updateProfile = useCallback( async(payload: UpdateProfilePayload, username: string) => {
+        try {
+            setLoading(true);
+            await updateProfileAPI(payload, username)
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setLoading(false);
+        }
+    }, []);
+
     return {
         loading,
         candidates,
@@ -73,6 +84,7 @@ export default function useCandidate() {
         getCandidate,
         addCandidate,
         changeCandidate,
-        deleteCandidate
+        deleteCandidate,
+        updateProfile
     }
 }

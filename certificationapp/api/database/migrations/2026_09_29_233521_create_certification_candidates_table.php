@@ -14,13 +14,13 @@ return new class extends Migration
         Schema::create('certification_candidates', function (Blueprint $table) {
             $table->id();
             $table->string('full_name');
-            $table->bigInteger('nik');
+            $table->bigInteger('nik')->unique();
             $table->string('email');
             $table->bigInteger('phone_number');
             $table->date('born_date');
             $table->enum('gender', ['male', 'female']);
             $table->text('address');
-            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->foreignId('certification_scheme_id')->nullable()->constrained('certification_schemes');
             $table->timestamps();
         });

@@ -8,11 +8,13 @@ import {
 } from "../services/userService";
 import type { UserState } from "../types/auth.type";
 import type { UserPayload } from "../types/user.type";
+import type { CandidateState } from "../types/candidate.type";
 
 export default function useUser() {
   const [loading, setLoading] = useState(true);
   const [users, setUsers] = useState<UserState[]>([]);
   const [user, setUser] = useState<UserState>();
+  const [candidate, setCandidate] = useState<CandidateState>();
 
   const getUsers = useCallback(async () => {
     try {
@@ -32,6 +34,7 @@ export default function useUser() {
       setLoading(true);
       const res = await showUser(id);
       setUser(res.data.data!.user);
+      setCandidate(res.data!.data.candidate)
     } catch (err) {
       console.error(err);
     } finally {
@@ -76,6 +79,7 @@ export default function useUser() {
     loading,
     users,
     user,
+    candidate,
     getUsers,
     getUser,
     addUser,

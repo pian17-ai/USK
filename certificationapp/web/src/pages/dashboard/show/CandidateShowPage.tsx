@@ -35,9 +35,9 @@ function CandidateShowPage() {
         <div className="card-body p-4">
           <div className="row">
             <div className="col-md-6">
-              <div className="detail-label">Nomor Peserta</div>
+              <div className="detail-label">NIK</div>
 
-              <div className="detail-value">{candidate?.candidate_number}</div>
+              <div className="detail-value">{candidate?.nik}</div>
 
               <div className="detail-label">Nama Lengkap</div>
 

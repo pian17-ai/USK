@@ -1,5 +1,5 @@
 import api from "../api/api"
-import type { CandidatePayload, CandidateResponse, CandidatesResponse } from "../types/candidate.type";
+import type { CandidatePayload, CandidateResponse, CandidatesResponse, UpdateProfilePayload } from "../types/candidate.type";
 import type { ApiResponse } from "../types/response.type";
 
 export const indexCandidate = () => {
@@ -20,4 +20,8 @@ export const updateCandidate = (payload: CandidatePayload, id: number) => {
 
 export const destroyCandidate = (id: number | string) => {
     return api.delete(`/candidates/${id}`)
+}
+
+export const updateProfileAPI = (payload: UpdateProfilePayload, username: string) => {
+    return api.put(`/candidates/update/${username}`, payload)
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\SchemeResource;
+use App\Models\CertificationCandidate;
 use App\Models\CertificationScheme;
 use Illuminate\Http\Request;
 
@@ -103,6 +104,39 @@ class SchemeController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Delete scheme successfully'
+        ]);
+    }
+
+    public function apply_scheme(Request $request, string $id) {
+        $user = $request->user();
+
+        $checkAlready = CertificationCandidate::where('user_id', $user->id)->first();
+
+        if ($checkAlready->certification_scheme_id !== null) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Scheme can only 1 applying'
+            ], 409);
+        }
+
+        $scheme = CertificationScheme::where('id', $id)->first();
+
+        if (!$scheme) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Scheme not found'
+            ], 404);
+        }
+
+        $candidate = CertificationCandidate::where('user_id', $user->id)->first();
+
+        $candidate->update([
+            'certification_scheme_id' => $scheme->id
+        ]);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Applying scheme successfully'
         ]);
     }
 }

@@ -34,3 +34,14 @@ export type CandidatePayload = {
     user_id : number;
     certification_scheme_id: number | null;
 }
+
+export type UpdateProfilePayload = {
+    username: string;
+    full_name: string;
+    nik: number;
+    email: string;
+    phone_number: string;
+    born_date: string;
+    gender: string;
+    address: string;
+}

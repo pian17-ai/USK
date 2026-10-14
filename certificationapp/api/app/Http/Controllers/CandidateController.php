@@ -45,7 +45,7 @@ class CandidateController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'full_name' => 'required|regex:/^[a-zA-Z]{1,50}+$/',
+            'full_name' => 'required|regex:/^[a-zA-Z ]{1,50}+$/',
             'nik' => 'required|integer|regex:/^[0-9]{16,16}+$/',
             'email' => 'required|email',
             'phone_number' => 'required|integer|regex:/^[0-9]{11,13}+$/',
@@ -92,7 +92,7 @@ class CandidateController extends Controller
     public function update(Request $request, string $id)
     {
         $validated = $request->validate([
-            'full_name' => 'nullable|regex:/^[a-zA-Z]{1,50}+$/',
+            'full_name' => 'nullable|regex:/^[a-zA-Z ]{1,50}+$/',
             'nik' => 'nullable|integer|regex:/^[0-9]{16,16}+$/',
             'email' => 'nullable|email',
             'phone_number' => 'nullable|integer|regex:/^[0-9]{11,13}+$/',
@@ -139,6 +139,50 @@ class CandidateController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Delete Candidate successfully'
+        ]);
+    }
+
+    public function update_profile(Request $request, string $username)
+    {
+        $validated = $request->validate([
+            'username' => 'nullable|string|regex:/^[a-zA-Z ]{1,50}+$/',
+            'full_name' => 'nullable|regex:/^[a-zA-Z ]{1,50}+$/',
+            'nik' => 'nullable|integer|regex:/^[0-9]{16,16}+$/',
+            'email' => 'nullable|email',
+            'phone_number' => 'nullable|integer|regex:/^[0-9]{11,13}+$/',
+            'born_date' => 'nullable|date',
+            'gender' => 'nullable',
+            'address' => 'nullable'
+        ]);
+
+        $user = $request->user();
+
+        if ($user->username !== $username) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Access forbidden'
+            ], 403);
+        }
+
+        $candidate = CertificationCandidate::where('user_id', $user->id)->first();
+
+        $user->update([
+            'username' => $validated['username']
+        ]);
+
+        $candidate->update([
+            'full_name' => $validated['full_name'],
+            'nik' => $validated['nik'],
+            'email' => $validated['email'],
+            'phone_number' => $validated['phone_number'],
+            'born_date' => $validated['born_date'],
+            'gender' => $validated['gender'],
+            'address' => $validated['address']
+        ]);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Update data successfully'
         ]);
     }
 }

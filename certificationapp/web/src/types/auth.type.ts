@@ -10,12 +10,15 @@ export type LoginResponse = {
   user: UserState;
 };
 
-export type RegisterResponse = {};
+export type RegisterResponse = {
+  token: string;
+  user: UserState;
+};
 
 export type UserState = {
   id: number;
-  full_name: string;
   username: string;
+  role: string;
   created_at: string;
   updated_at: string;
 };
@@ -28,9 +31,15 @@ export type AuthContextType = {
 };
 
 export type RegisterPayload = {
-  full_name: string;
   username: string;
   password: string;
+  full_name: string;
+  nik: number;
+  email: string;
+  phone_number: number;
+  born_date: string;
+  gender: string;
+  address: string;
 };
 
 export type LoginPayload = {

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -35,9 +36,7 @@ class UserController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Get user successfully',
-            'data' => [
-                'user' => $user
-            ]
+            'data' => new UserResource($user)
         ]);
     }
 
@@ -75,9 +74,9 @@ class UserController extends Controller
     public function update(Request $request, string $id)
     {
         $validated = $request->validate([
-            'full_name' => 'required',
-            'username' => 'required',
-            'password' => 'required'
+            'username' => 'nullable',
+            'role' => 'nullable',
+            'password' => 'nullable'
         ]);
 
         $user = User::where('id', $id)->first();
@@ -90,9 +89,9 @@ class UserController extends Controller
         }
 
         $user->update([
-            'full_name' => $validated['full_name'],
             'username' => $validated['username'],
-            'password' => $validated['password'],
+            'role' => $validated['role'],
+            'password' => $validated['password'] ? Hash::make($validated['password']) : $user->password,
         ]);
 
         return response()->json([

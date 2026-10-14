@@ -3,9 +3,9 @@ import { Link, Outlet } from "react-router-dom"
 function PublicLayout() {
   return (
     <>
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
       <div className="container">
-        <a className="navbar-brand" href="#">Certification App</a>
+        <Link className="navbar-brand" to={"/"}>Certification App</Link>
 
         <button
           className="navbar-toggler"
@@ -19,13 +19,13 @@ function PublicLayout() {
         <div className="collapse navbar-collapse" id="navbarMenu">
           <ul className="navbar-nav ms-auto">
             <li className="nav-item">
-              <Link className="nav-link active" to={"/"}>Home</Link>
+              <Link className="nav-link" to={"/"}>Home</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to={"/login"}>Login</Link>
+              <a className="nav-link" href="/#schemes">Skema</a>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to={"/register"}>Register</Link>
+              <a className="nav-link" href="/#join">Bergabung</a>
             </li>
           </ul>
         </div>
@@ -33,11 +33,21 @@ function PublicLayout() {
     </nav>
 
     <section
-      className="container text-center d-flex flex-column justify-content-center align-items-center"
       style={{ minHeight: '85vh' }}
     >
       <Outlet />
     </section>
+
+    <footer className="container py-4">
+      <div className="d-flex flex-column flex-md-row
+        justify-content-between align-items-center gap-2">
+        <span className="fw-bold">Certification App</span>
+
+        <span className="text-secondary small">
+          © 2026 Certification App. All rights reserved.
+        </span>
+      </div>
+    </footer>
     </>
   )
 }

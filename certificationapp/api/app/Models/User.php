@@ -33,6 +33,6 @@ class User extends Authenticatable
 
     public function certificationCandidate()
     {
-        return $this->hasOne(User::class);
+        return $this->hasOne(CertificationCandidate::class);
     }
 }
