@@ -7,6 +7,13 @@ import type {
 } from "../../types/candidate.type";
 import { Link } from "react-router-dom";
 import useUser from "../../hooks/useUser";
+import {
+  validateForm,
+  hasErrors,
+  fieldClass,
+  candidateRules,
+  type FormErrors,
+} from "../../validations";
 
 function CandidatePage() {
   const {
@@ -36,6 +43,8 @@ function CandidatePage() {
     certification_scheme_id: 0,
   });
 
+  const [errors, setErrors] = useState<FormErrors>({});
+
   const filteredCandidates = candidates.filter((candidate) =>
     candidate.full_name.toLowerCase().includes(search.toLowerCase()) ||
     candidate.email.toLowerCase().includes(search.toLowerCase())
@@ -43,6 +52,10 @@ function CandidatePage() {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const validationErrors = validateForm(form, candidateRules);
+    setErrors(validationErrors);
+    if (hasErrors(validationErrors)) return;
 
     if (isEdit) {
       changeCandidate(form, idEdit);
@@ -62,18 +75,21 @@ function CandidatePage() {
       ...form,
       [e.target.name]: e.target.value,
     });
+    setErrors((prev) => ({ ...prev, [e.target.name]: "" }));
   };
 
   const handleAdd = () => {
     setIsModalOpen(true);
     setIsEdit(false);
     setIdEdit(0);
+    setErrors({});
   };
 
   const handleEdit = (candidate: CandidateState) => {
     setIsModalOpen(true);
     setIsEdit(true);
     setIdEdit(candidate.id);
+    setErrors({});
     setForm({
       full_name: candidate.full_name,
       nik: candidate.nik,
@@ -98,6 +114,7 @@ function CandidatePage() {
     setIsModalOpen(false);
     setIsEdit(false);
     setIdEdit(0);
+    setErrors({});
     setForm({
       full_name: "",
       nik: 0,
@@ -135,14 +152,18 @@ function CandidatePage() {
           <div className="mb-3">
             <label className="form-label fw-semibold">User</label>
 
-            <select onChange={handleChanges} name="user_id" value={form.user_id} className="form-select">
-              <option selected>Pilih user</option>
+            <select onChange={handleChanges} name="user_id" value={form.user_id} className={`form-select ${fieldClass(errors, "user_id")}`}>
+              <option value="">Pilih user</option>
               {
                 users.map((user) => (
                   <option className="" value={user.id}>{user.id} - {user.username}</option>
                 ))
               }
             </select>
+
+            {errors.user_id && (
+              <div className="invalid-feedback">{errors.user_id}</div>
+            )}
           </div>
 
           <div className="mb-3">
@@ -154,9 +175,13 @@ function CandidatePage() {
               value={form.full_name}
               name="full_name"
               type="text"
-              className="form-control"
+              className={`form-control ${fieldClass(errors, "full_name")}`}
               placeholder="Masukkan nama lengkap"
             />
+
+            {errors.full_name && (
+              <div className="invalid-feedback">{errors.full_name}</div>
+            )}
           </div>
 
           <div className="mb-3">
@@ -168,9 +193,11 @@ function CandidatePage() {
               value={form.nik}
               name="nik"
               type="text"
-              className="form-control"
+              className={`form-control ${fieldClass(errors, "nik")}`}
               placeholder="NIK"
             />
+
+            {errors.nik && <div className="invalid-feedback">{errors.nik}</div>}
           </div>
 
           <div className="mb-3">
@@ -182,9 +209,13 @@ function CandidatePage() {
               value={form.email}
               name="email"
               type="email"
-              className="form-control"
+              className={`form-control ${fieldClass(errors, "email")}`}
               placeholder="nama@email.com"
             />
+
+            {errors.email && (
+              <div className="invalid-feedback">{errors.email}</div>
+            )}
           </div>
 
           <div className="mb-3">
@@ -196,9 +227,13 @@ function CandidatePage() {
               value={form.phone_number}
               type="text"
               name="phone_number"
-              className="form-control"
+              className={`form-control ${fieldClass(errors, "phone_number")}`}
               placeholder="08xxxxxxxxxx"
             />
+
+            {errors.phone_number && (
+              <div className="invalid-feedback">{errors.phone_number}</div>
+            )}
           </div>
 
           <div className="mb-3">
@@ -210,8 +245,12 @@ function CandidatePage() {
               value={form.born_date}
               type="date"
               name="born_date"
-              className="form-control"
+              className={`form-control ${fieldClass(errors, "born_date")}`}
             />
+
+            {errors.born_date && (
+              <div className="invalid-feedback">{errors.born_date}</div>
+            )}
           </div>
 
           <div className="mb-3">
@@ -222,7 +261,7 @@ function CandidatePage() {
               value={form.gender}
               id="gender"
               name="gender"
-              className="form-select"
+              className={`form-select ${fieldClass(errors, "gender")}`}
             >
               <option value={""}>Pilih jenis kelamin</option>
 
@@ -230,6 +269,10 @@ function CandidatePage() {
 
               <option value="female">Perempuan</option>
             </select>
+
+            {errors.gender && (
+              <div className="invalid-feedback">{errors.gender}</div>
+            )}
           </div>
 
           <div className="mb-3">
@@ -240,10 +283,14 @@ function CandidatePage() {
               onChange={handleChanges}
               id="address"
               value={form.address}
-              className="form-control"
+              className={`form-control ${fieldClass(errors, "address")}`}
               rows={4}
               placeholder="Masukkan alamat lengkap"
             ></textarea>
+
+            {errors.address && (
+              <div className="invalid-feedback">{errors.address}</div>
+            )}
           </div>
 
           <div className="mb-4">

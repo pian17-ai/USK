@@ -2,6 +2,13 @@ import { useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import type { RegisterPayload } from "../../types/auth.type";
+import {
+  validateForm,
+  hasErrors,
+  fieldClass,
+  registerRules,
+  type FormErrors,
+} from "../../validations";
 
 function RegisterPage() {
   const { register } = useAuth();
@@ -19,16 +26,23 @@ function RegisterPage() {
     address: "",
   });
 
+  const [errors, setErrors] = useState<FormErrors>({});
+
   const handleChanges = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     e.preventDefault();
     setForm({
       ...form,
       [e.target.name]: e.target.value,
     });
+    setErrors((prev) => ({ ...prev, [e.target.name]: "" }));
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const validationErrors = validateForm(form, registerRules);
+    setErrors(validationErrors);
+    if (hasErrors(validationErrors)) return;
 
     try {
       await register(form);
@@ -51,9 +65,13 @@ function RegisterPage() {
           name="username"
           type="text"
           id="username"
-          className="form-control"
+          className={`form-control ${fieldClass(errors, "username")}`}
           placeholder="Masukkan username"
         />
+
+        {errors.username && (
+          <div className="invalid-feedback">{errors.username}</div>
+        )}
       </div>
 
       <div className="mb-3">
@@ -65,9 +83,13 @@ function RegisterPage() {
           name="password"
           type="password"
           id="password"
-          className="form-control"
+          className={`form-control ${fieldClass(errors, "password")}`}
           placeholder="Masukkan password"
         />
+
+        {errors.password && (
+          <div className="invalid-feedback">{errors.password}</div>
+        )}
       </div>
 
       <div className="mb-3">
@@ -79,9 +101,13 @@ function RegisterPage() {
           name="full_name"
           type="text"
           id="full_name"
-          className="form-control"
+          className={`form-control ${fieldClass(errors, "full_name")}`}
           placeholder="Masukkan nama lengkap"
         />
+
+        {errors.full_name && (
+          <div className="invalid-feedback">{errors.full_name}</div>
+        )}
       </div>
 
       <div className="mb-3">
@@ -95,9 +121,11 @@ function RegisterPage() {
           name="nik"
           type="text"
           id="nik"
-          className="form-control"
+          className={`form-control ${fieldClass(errors, "nik")}`}
           placeholder="Masukkan nik"
         />
+
+        {errors.nik && <div className="invalid-feedback">{errors.nik}</div>}
       </div>
 
       <div className="mb-3">
@@ -109,9 +137,11 @@ function RegisterPage() {
           name="email"
           type="email"
           id="email"
-          className="form-control"
+          className={`form-control ${fieldClass(errors, "email")}`}
           placeholder="Masukkan email"
         />
+
+        {errors.email && <div className="invalid-feedback">{errors.email}</div>}
       </div>
 
       <div className="mb-3">
@@ -123,9 +153,13 @@ function RegisterPage() {
           name="phone_number"
           type="text"
           id="phone_number"
-          className="form-control"
+          className={`form-control ${fieldClass(errors, "phone_number")}`}
           placeholder="Masukkan no telepon"
         />
+
+        {errors.phone_number && (
+          <div className="invalid-feedback">{errors.phone_number}</div>
+        )}
       </div>
 
       <div className="mb-3">
@@ -137,15 +171,19 @@ function RegisterPage() {
           name="born_date"
           type="date"
           id="born_date"
-          className="form-control"
+          className={`form-control ${fieldClass(errors, "born_date")}`}
           placeholder="Masukkan tanggal lahir"
         />
+
+        {errors.born_date && (
+          <div className="invalid-feedback">{errors.born_date}</div>
+        )}
       </div>
 
       <div className="mb-3">
               <label className="form-label fw-semibold">Jenis Kelamin</label>
 
-              <select name="gender" value={form.gender} onChange={handleChanges} className="form-select">
+              <select name="gender" value={form.gender} onChange={handleChanges} className={`form-select ${fieldClass(errors, "gender")}`}>
                 <option selected disabled>
                   Pilih jenis kelamin
                 </option>
@@ -154,6 +192,10 @@ function RegisterPage() {
 
                 <option value="female">Perempuan</option>
               </select>
+
+              {errors.gender && (
+                <div className="invalid-feedback">{errors.gender}</div>
+              )}
             </div>
 
       <div className="mb-3">
@@ -165,9 +207,13 @@ function RegisterPage() {
           name="address"
           type="text"
           id="address"
-          className="form-control"
+          className={`form-control ${fieldClass(errors, "address")}`}
           placeholder="Masukkan alamat"
         />
+
+        {errors.address && (
+          <div className="invalid-feedback">{errors.address}</div>
+        )}
       </div>
 
       <button type="submit" className="btn btn-dark btn-lg w-100">

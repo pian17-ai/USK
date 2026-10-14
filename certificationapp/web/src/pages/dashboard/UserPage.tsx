@@ -1,6 +1,13 @@
 import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
 import useUser from "../../hooks/useUser";
 import type { UserPayload, UserState } from "../../types/user.type";
+import {
+  validateForm,
+  hasErrors,
+  fieldClass,
+  userRules,
+  type FormErrors,
+} from "../../validations";
 
 function UserPage() {
   const { users, getUsers, addUser, changeUser, deleteUser } = useUser();
@@ -14,15 +21,27 @@ function UserPage() {
     password: "",
   });
 
+  const [errors, setErrors] = useState<FormErrors>({});
+
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setForm({
       ...form,
       [e.target.name]: e.target.value
     })
+    setErrors((prev) => ({ ...prev, [e.target.name]: "" }));
   }
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const currentUsername = users.find((user) => user.id === idEdit)?.username;
+
+    const validationErrors = validateForm(
+      form,
+      userRules(users, { isEdit, currentUsername }),
+    );
+    setErrors(validationErrors);
+    if (hasErrors(validationErrors)) return;
 
     if (isEdit) {
       await changeUser(form, idEdit);
@@ -37,12 +56,14 @@ function UserPage() {
   const handleAdd = () => {
     setIsEdit(false);
     setIsModalOpen(true);
+    setErrors({});
   }
 
   const handleEdit = async (user: UserState) => {
     setIsEdit(true);
     setIsModalOpen(true);
     setIdEdit(user.id);
+    setErrors({});
     setForm({
       username: user.username,
       role: user.role,
@@ -62,6 +83,7 @@ function UserPage() {
     setIsEdit(false);
     setIsModalOpen(false);
     setIdEdit(0);
+    setErrors({});
     setForm({
       username: "",
       role: "",
@@ -98,13 +120,17 @@ function UserPage() {
 
             <input
               type="text"
-              className="form-control"
+              className={`form-control ${fieldClass(errors, "username")}`}
               placeholder="Masukkan nama lengkap"
               name="username"
               id="username"
               value={form.username}
               onChange={handleChange}
             />
+
+            {errors.username && (
+              <div className="invalid-feedback">{errors.username}</div>
+            )}
           </div>
 
           <div className="mb-3">
@@ -121,13 +147,17 @@ function UserPage() {
 
             <input
               type="password"
-              className="form-control"
+              className={`form-control ${fieldClass(errors, "password")}`}
               placeholder="Masukkan password"
               name="password"
               id="password"
               value={form.password}
               onChange={handleChange}
             />
+
+            {errors.password && (
+              <div className="invalid-feedback">{errors.password}</div>
+            )}
           </div>
 
           <div className="d-flex gap-2">

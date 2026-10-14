@@ -2,6 +2,13 @@ import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
 import useScheme from "../../hooks/useScheme";
 import type { SchemePayload, SchemeState } from "../../types/scheme.type";
 import { Link } from "react-router-dom";
+import {
+  validateForm,
+  hasErrors,
+  fieldClass,
+  schemeRules,
+  type FormErrors,
+} from "../../validations";
 
 function SchemePage() {
   const { schemes, getSchemes, addScheme, changeScheme, deleteScheme } =
@@ -17,8 +24,20 @@ function SchemePage() {
     description: "",
   });
 
+  const [errors, setErrors] = useState<FormErrors>({});
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const currentCode = schemes.find((scheme) => scheme.id === idEdit)
+      ?.scheme_code;
+
+    const validationErrors = validateForm(
+      form,
+      schemeRules(schemes, { currentCode }),
+    );
+    setErrors(validationErrors);
+    if (hasErrors(validationErrors)) return;
 
     if (isEdit) {
       await changeScheme(form, idEdit);
@@ -39,11 +58,13 @@ function SchemePage() {
       ...form,
       [e.target.name]: e.target.value,
     });
+    setErrors((prev) => ({ ...prev, [e.target.name]: "" }));
   };
 
   const handleAdd = () => {
     setIsEdit(false);
     setIsModalOpen(true);
+    setErrors({});
     setForm({
       scheme_code: "",
       scheme_name: "",
@@ -55,6 +76,7 @@ function SchemePage() {
     setIsEdit(true);
     setIsModalOpen(true);
     setIdEdit(scheme.id);
+    setErrors({});
     setForm({
       scheme_code: scheme.scheme_code,
       scheme_name: scheme.scheme_name,
@@ -71,6 +93,7 @@ function SchemePage() {
   const handleClose = () => {
     setIsEdit(false);
     setIsModalOpen(false);
+    setErrors({});
     setForm({
       scheme_code: "",
       scheme_name: "",
@@ -107,11 +130,15 @@ function SchemePage() {
               <input
                 onChange={handleChange}
                 type="text"
-                className="form-control"
+                className={`form-control ${fieldClass(errors, "scheme_code")}`}
                 placeholder="Contoh: WD"
                 name="scheme_code"
                 value={form.scheme_code}
               />
+
+              {errors.scheme_code && (
+                <div className="invalid-feedback">{errors.scheme_code}</div>
+              )}
 
               <div className="form-text">
                 Kode unik untuk certification scheme.
@@ -124,11 +151,15 @@ function SchemePage() {
               <input
                 onChange={handleChange}
                 type="text"
-                className="form-control"
+                className={`form-control ${fieldClass(errors, "scheme_name")}`}
                 placeholder="Contoh: Web Developer"
                 name="scheme_name"
                 value={form.scheme_name}
               />
+
+              {errors.scheme_name && (
+                <div className="invalid-feedback">{errors.scheme_name}</div>
+              )}
             </div>
 
             <div className="mb-4">
@@ -136,12 +167,16 @@ function SchemePage() {
 
               <textarea
                 onChange={handleChange}
-                className="form-control"
+                className={`form-control ${fieldClass(errors, "description")}`}
                 rows={5}
                 placeholder="Masukkan deskripsi certification scheme"
                 name="description"
                 value={form.description}
               ></textarea>
+
+              {errors.description && (
+                <div className="invalid-feedback">{errors.description}</div>
+              )}
             </div>
 
             <div className="d-flex gap-2">

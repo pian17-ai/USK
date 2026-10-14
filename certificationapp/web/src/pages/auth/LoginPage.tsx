@@ -3,6 +3,13 @@ import { useNavigate } from "react-router-dom";
 import type { LoginPayload } from "../../types/auth.type";
 import { loginAPI } from "../../services/authService";
 import useAuth from "../../hooks/useAuth";
+import {
+  validateForm,
+  hasErrors,
+  fieldClass,
+  loginRules,
+  type FormErrors,
+} from "../../validations";
 
 function LoginPage() {
   const { login } = useAuth();
@@ -12,10 +19,16 @@ function LoginPage() {
     password: "",
   });
 
+  const [errors, setErrors] = useState<FormErrors>({});
+
   const navigate = useNavigate();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const validationErrors = validateForm(form, loginRules);
+    setErrors(validationErrors);
+    if (hasErrors(validationErrors)) return;
 
     const res = await loginAPI(form);
     if (res) {
@@ -33,6 +46,7 @@ function LoginPage() {
       ...form,
       [e.target.name]: e.target.value,
     });
+    setErrors((prev) => ({ ...prev, [e.target.name]: "" }));
   };
 
   return (
@@ -47,9 +61,13 @@ function LoginPage() {
             name="username"
             type="text"
             id="username"
-            className="form-control"
+            className={`form-control ${fieldClass(errors, "username")}`}
             placeholder="Masukkan username"
           />
+
+          {errors.username && (
+            <div className="invalid-feedback">{errors.username}</div>
+          )}
         </div>
 
         <div className="mb-3">
@@ -61,9 +79,13 @@ function LoginPage() {
             name="password"
             type="password"
             id="password"
-            className="form-control"
+            className={`form-control ${fieldClass(errors, "password")}`}
             placeholder="Masukkan password"
           />
+
+          {errors.password && (
+            <div className="invalid-feedback">{errors.password}</div>
+          )}
         </div>
 
         <button type="submit" className="btn btn-dark btn-lg w-100">

@@ -4,6 +4,13 @@ import useAuth from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import type { UpdateProfilePayload } from "../../types/candidate.type";
 import useCandidate from "../../hooks/useCandidate";
+import {
+  validateForm,
+  hasErrors,
+  fieldClass,
+  profileRules,
+  type FormErrors,
+} from "../../validations";
 
 export default function ProfilePage() {
   const { user, candidate, getUser } = useUser();
@@ -11,6 +18,7 @@ export default function ProfilePage() {
   const { updateProfile } = useCandidate();
 
   const [isEdit, setIsEdit] = useState(false);
+  const [errors, setErrors] = useState<FormErrors>({});
 
   const userData = localStorage.getItem("user");
   const userId = JSON.parse(userData!);
@@ -35,10 +43,12 @@ export default function ProfilePage() {
       ...form,
       [e.target.name]: e.target.value,
     });
+    setErrors((prev) => ({ ...prev, [e.target.name]: "" }));
   };
 
   const handleEdit = () => {
     setIsEdit(true);
+    setErrors({});
     setForm({
       username: user!.username,
       full_name: candidate!.full_name,
@@ -53,6 +63,11 @@ export default function ProfilePage() {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+
+    const validationErrors = validateForm(form, profileRules);
+    setErrors(validationErrors);
+    if (hasErrors(validationErrors)) return;
+
     await updateProfile(form, userId.username);
     getUser(userId?.id);
     setIsEdit(false);
@@ -217,9 +232,13 @@ export default function ProfilePage() {
                     value={form.full_name}
                     type="text"
                     name="full_name"
-                    className="form-control"
+                    className={`form-control ${fieldClass(errors, "full_name")}`}
                     placeholder="Nama Lengkap"
                   />
+
+                  {errors.full_name && (
+                    <div className="invalid-feedback">{errors.full_name}</div>
+                  )}
                 </div>
               </div>
 
@@ -232,9 +251,13 @@ export default function ProfilePage() {
                     value={form.username}
                     type="text"
                     name="username"
-                    className="form-control"
+                    className={`form-control ${fieldClass(errors, "username")}`}
                     placeholder="Username"
                   />
+
+                  {errors.username && (
+                    <div className="invalid-feedback">{errors.username}</div>
+                  )}
                 </div>
               </div>
 
@@ -247,9 +270,13 @@ export default function ProfilePage() {
                     value={form.nik}
                     type="text"
                     name="nik"
-                    className="form-control"
+                    className={`form-control ${fieldClass(errors, "nik")}`}
                     placeholder="NIK"
                   />
+
+                  {errors.nik && (
+                    <div className="invalid-feedback">{errors.nik}</div>
+                  )}
                 </div>
               </div>
 
@@ -262,9 +289,13 @@ export default function ProfilePage() {
                     value={form.email}
                     type="text"
                     name="email"
-                    className="form-control"
+                    className={`form-control ${fieldClass(errors, "email")}`}
                     placeholder="example@gmail.com"
                   />
+
+                  {errors.email && (
+                    <div className="invalid-feedback">{errors.email}</div>
+                  )}
                 </div>
               </div>
 
@@ -277,9 +308,15 @@ export default function ProfilePage() {
                     value={form.phone_number}
                     type="text"
                     name="phone_number"
-                    className="form-control"
+                    className={`form-control ${fieldClass(errors, "phone_number")}`}
                     placeholder="08XXXXXXX.."
                   />
+
+                  {errors.phone_number && (
+                    <div className="invalid-feedback">
+                      {errors.phone_number}
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -292,8 +329,12 @@ export default function ProfilePage() {
                     value={form.born_date}
                     type="date"
                     name="born_date"
-                    className="form-control"
+                    className={`form-control ${fieldClass(errors, "born_date")}`}
                   />
+
+                  {errors.born_date && (
+                    <div className="invalid-feedback">{errors.born_date}</div>
+                  )}
                 </div>
               </div>
 
@@ -305,11 +346,15 @@ export default function ProfilePage() {
                     id="gender"
                     value={form.gender}
                     name="gender"
-                    className="form-select"
+                    className={`form-select ${fieldClass(errors, "gender")}`}
                   >
                     <option value="male">Laki-laki</option>
                     <option value="female">Perempuan</option>
                   </select>
+
+                  {errors.gender && (
+                    <div className="invalid-feedback">{errors.gender}</div>
+                  )}
                 </div>
               </div>
 
@@ -332,9 +377,13 @@ export default function ProfilePage() {
                     value={form.address}
                     type="text"
                     name="address"
-                    className="form-control"
+                    className={`form-control ${fieldClass(errors, "address")}`}
                     placeholder="Address.."
                   />
+
+                  {errors.address && (
+                    <div className="invalid-feedback">{errors.address}</div>
+                  )}
                 </div>
               </div>
             </div>
