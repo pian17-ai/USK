@@ -6,6 +6,7 @@ import type {
   CandidateState,
 } from "../../types/candidate.type";
 import { Link } from "react-router-dom";
+import useUser from "../../hooks/useUser";
 
 function CandidatePage() {
   const {
@@ -16,6 +17,7 @@ function CandidatePage() {
     deleteCandidate,
   } = useCandidate();
   const { schemes, getSchemes } = useScheme();
+  const { users, getUsers } = useUser();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
@@ -111,6 +113,7 @@ function CandidatePage() {
 
   useEffect(() => {
     getCandidates();
+    getUsers();
     getSchemes();
   }, []);
   return (
@@ -130,6 +133,19 @@ function CandidatePage() {
       {isModalOpen && (
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
+            <label className="form-label fw-semibold">User</label>
+
+            <select onChange={handleChanges} name="user_id" value={form.user_id} className="form-select">
+              <option selected>Pilih user</option>
+              {
+                users.map((user) => (
+                  <option className="" value={user.id}>{user.id} - {user.username}</option>
+                ))
+              }
+            </select>
+          </div>
+
+          <div className="mb-3">
             <label className="form-label fw-semibold">Nama Lengkap</label>
 
             <input
@@ -140,6 +156,20 @@ function CandidatePage() {
               type="text"
               className="form-control"
               placeholder="Masukkan nama lengkap"
+            />
+          </div>
+
+          <div className="mb-3">
+            <label className="form-label fw-semibold">NIK</label>
+
+            <input
+              onChange={handleChanges}
+              id="nik"
+              value={form.nik}
+              name="nik"
+              type="text"
+              className="form-control"
+              placeholder="NIK"
             />
           </div>
 
@@ -225,7 +255,7 @@ function CandidatePage() {
               onChange={handleChanges}
               name="certification_scheme_id"
               className="form-select"
-              value={form.certification_scheme_id}
+              value={form.certification_scheme_id ?? 0}
             >
               <option selected disabled>
                 Pilih certification scheme

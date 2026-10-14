@@ -57,7 +57,6 @@ class UserController extends Controller
         }
 
         $user = User::create([
-            'full_name' => $validated['full_name'],
             'username' => $validated['username'],
             'password' => $validated['password']
         ]);

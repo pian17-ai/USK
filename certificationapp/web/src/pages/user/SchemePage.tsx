@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import useScheme from "../../hooks/useScheme";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function SchemePage() {
     const { schemes, getSchemes } = useScheme();
     const [search, setSearch] = useState("");
-    const navigate = useNavigate();
 
     const filteredSchemes = schemes.filter((scheme) => (
       scheme.scheme_name.toLowerCase().includes(search.toLowerCase()) ||

@@ -14,7 +14,7 @@ function UserPage() {
     password: "",
   });
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setForm({
       ...form,
       [e.target.name]: e.target.value
@@ -100,8 +100,8 @@ function UserPage() {
               type="text"
               className="form-control"
               placeholder="Masukkan nama lengkap"
-              name="full_name"
-              id="full_name"
+              name="username"
+              id="username"
               value={form.username}
               onChange={handleChange}
             />
@@ -109,16 +109,11 @@ function UserPage() {
 
           <div className="mb-3">
             <label className="form-label fw-semibold">Role</label>
-
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Masukkan role ('admin' atau 'user')"
-              name="role"
-              id="role"
-              value={form.role}
-              onChange={handleChange}
-            />
+            
+            <select className="form-select" name="role" value={form.role} onChange={handleChange}>
+              <option value="user">User</option>
+              <option value="admin">Admin</option>
+            </select>
           </div>
 
           <div className="mb-4">

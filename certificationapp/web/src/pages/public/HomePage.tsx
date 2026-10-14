@@ -25,12 +25,6 @@ function HomePage() {
     setRegisterForm(true);
   };
 
-  const handleCloseForm = () => {
-    setOpenForm(false);
-    setLoginForm(false);
-    setRegisterForm(false);
-  };
-
   useEffect(() => {
     getSchemes();
   }, []);

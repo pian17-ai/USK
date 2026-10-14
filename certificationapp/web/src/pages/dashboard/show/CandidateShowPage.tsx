@@ -65,8 +65,8 @@ function CandidateShowPage() {
 
               <div className="detail-value">
                 <span className="badge bg-primary">
-                  {candidate?.certification_scheme.scheme_code} -{" "}
-                  {candidate?.certification_scheme.scheme_name}
+                  {candidate?.certification_scheme!.scheme_code} -{" "}
+                  {candidate?.certification_scheme!.scheme_name}
                 </span>
               </div>
 

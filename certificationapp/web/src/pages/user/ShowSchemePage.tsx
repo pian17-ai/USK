@@ -1,4 +1,4 @@
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import useScheme from "../../hooks/useScheme";
 import { useEffect } from "react";
 import useUser from "../../hooks/useUser";

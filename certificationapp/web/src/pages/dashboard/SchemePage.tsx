@@ -22,6 +22,7 @@ function SchemePage() {
 
     if (isEdit) {
       await changeScheme(form, idEdit);
+      handleClose();
     } else {
       await addScheme(form);
     }
@@ -43,6 +44,11 @@ function SchemePage() {
   const handleAdd = () => {
     setIsEdit(false);
     setIsModalOpen(true);
+    setForm({
+      scheme_code: "",
+      scheme_name: "",
+      description: "",
+    });
   };
 
   const handleEdit = (scheme: SchemeState) => {

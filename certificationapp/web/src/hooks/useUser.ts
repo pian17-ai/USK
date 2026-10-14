@@ -34,7 +34,7 @@ export default function useUser() {
       setLoading(true);
       const res = await showUser(id);
       setUser(res.data.data!.user);
-      setCandidate(res.data!.data.candidate)
+      setCandidate(res.data!.data!.candidate)
     } catch (err) {
       console.error(err);
     } finally {
