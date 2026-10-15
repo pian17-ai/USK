@@ -184,7 +184,7 @@ function RegisterPage() {
               <label className="form-label fw-semibold">Jenis Kelamin</label>
 
               <select name="gender" value={form.gender} onChange={handleChanges} className={`form-select ${fieldClass(errors, "gender")}`}>
-                <option selected disabled>
+                <option selected>
                   Pilih jenis kelamin
                 </option>
 

@@ -16,9 +16,11 @@ function ShowSchemePage() {
   const applying = candidate?.certification_scheme?.id;
 
   const handleApply = async() => {
-    await applyScheme(id!);
-    window.location.reload();
-    alert('Applying successfully')
+    if (confirm('Apakah yakin untuk memilih skema ini?')) {
+      await applyScheme(id!);
+      window.location.reload();
+      alert('Applying successfully')
+    }
   };
 
   useEffect(() => {

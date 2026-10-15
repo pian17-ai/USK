@@ -18,6 +18,7 @@ function LoginPage() {
     username: "",
     password: "",
   });
+  const [error, setError] = useState(false);
 
   const [errors, setErrors] = useState<FormErrors>({});
 
@@ -30,11 +31,13 @@ function LoginPage() {
     setErrors(validationErrors);
     if (hasErrors(validationErrors)) return;
 
-    const res = await loginAPI(form);
-    if (res) {
+    try {
+      const res = await loginAPI(form);
       login(res.data);
       navigate("/");
       window.location.reload();
+    } catch (err) {
+      setError(true);
     }
   };
 
@@ -87,6 +90,10 @@ function LoginPage() {
             <div className="invalid-feedback">{errors.password}</div>
           )}
         </div>
+
+        {error && (
+          <div className="alert alert-danger">Username atau Password salah</div>
+        )}
 
         <button type="submit" className="btn btn-dark btn-lg w-100">
           Login

@@ -1,8 +1,17 @@
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 
 function AdminLayout() {
   const { logout } = useAuth();
+
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    if (confirm('Apakah serius untuk logout?')) {
+      logout();
+      navigate('/');
+    }
+  }
   
   return (
     <div className="container-fluid">
@@ -27,7 +36,7 @@ function AdminLayout() {
               Users
             </Link>
 
-            <button onClick={() => logout()} className="btn btn-danger">Logout</button>
+            <button onClick={() => handleLogout()} className="btn btn-danger">Logout</button>
           </div>
         </div>
         <Outlet />

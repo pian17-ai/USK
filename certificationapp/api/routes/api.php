@@ -21,7 +21,7 @@ Route::prefix('/v1')->group(function () {
         });
     });
 
-    // Route::middleware('auth:sanctum', 'admin')->group(function () {
+    Route::middleware('auth:sanctum', 'admin')->group(function () {
         Route::get('/candidates', [CandidateController::class, 'index']);
         Route::post('/candidates', [CandidateController::class, 'store']);
         Route::put('/candidates/{id}', [CandidateController::class, 'update']);
@@ -35,7 +35,7 @@ Route::prefix('/v1')->group(function () {
         Route::post('/users', [UserController::class, 'store']);
         Route::put('/users/{id}', [UserController::class, 'update']);
         Route::delete('/users/{id}', [UserController::class, 'destroy']);
-    // });
+    });
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('/users/{id}', [UserController::class, 'show']);
