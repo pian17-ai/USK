@@ -22,6 +22,6 @@ export const destroyCandidate = (id: number | string) => {
     return api.delete(`/candidates/${id}`)
 }
 
-export const updateProfileAPI = (payload: UpdateProfilePayload, username: string) => {
-    return api.put(`/candidates/update/${username}`, payload)
+export const updateProfileAPI = (payload: UpdateProfilePayload, id: string | number) => {
+    return api.put(`/candidates/update/${id}`, payload)
 }

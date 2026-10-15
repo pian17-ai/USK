@@ -41,7 +41,7 @@ Route::prefix('/v1')->group(function () {
         Route::get('/users/{id}', [UserController::class, 'show']);
         Route::get('/candidates/{id}', [CandidateController::class, 'show']);
         Route::put('/schemes/apply/{id}', [SchemeController::class, 'apply_scheme']);
-        Route::put('/candidates/update/{username}', [CandidateController::class, 'update_profile']);
+        Route::put('/candidates/update/{id}', [CandidateController::class, 'update_profile']);
     });
 
     Route::get('/schemes/{id}', [SchemeController::class, 'show']);

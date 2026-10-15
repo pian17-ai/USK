@@ -12,7 +12,8 @@ use Illuminate\Database\Eloquent\Model;
 ])]
 class CertificationScheme extends Model
 {
-    public function certificationCandidate() {
+    public function certificationCandidate()
+    {
         return $this->hasMany(CertificationCandidate::class);
     }
 

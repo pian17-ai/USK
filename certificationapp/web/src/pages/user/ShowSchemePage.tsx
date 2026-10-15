@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import useScheme from "../../hooks/useScheme";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useUser from "../../hooks/useUser";
 
 function ShowSchemePage() {
@@ -14,12 +14,16 @@ function ShowSchemePage() {
   const hasOtherScheme = candidate?.certification_scheme;
   const isApplied = scheme?.id === hasOtherScheme?.id ? true : false;
   const applying = candidate?.certification_scheme?.id;
+  const [success, setSuccess] = useState(false);
 
-  const handleApply = async() => {
+  const handleApply = async (e: any) => {
+    e.preventDefault();
+
     if (confirm('Apakah yakin untuk memilih skema ini?')) {
       await applyScheme(id!);
-      window.location.reload();
-      alert('Applying successfully')
+      getScheme(id!);
+      getUser(userId.id);
+      setSuccess(true);
     }
   };
 
@@ -57,6 +61,7 @@ function ShowSchemePage() {
             {scheme?.description || "Belum ada deskripsi skema."}
           </p>
 
+
           <hr className="my-4" />
 
           <div className="row g-4 mb-4">
@@ -76,7 +81,6 @@ function ShowSchemePage() {
 
           <div className="bg-body-tertiary rounded-3 p-3 mb-4">
             <h6 className="fw-bold">
-              <i className="bi bi-info-circle me-2" />
               Informasi Pendaftaran
             </h6>
             <p className="text-secondary small mb-0">
@@ -84,6 +88,13 @@ function ShowSchemePage() {
               sertifikasi ini.
             </p>
           </div>
+
+          {
+            success && (
+              <p className="alert alert-success">Mendaftar skema sukses</p>
+            )
+          }
+
 
           {isApplied ? (
             <button className="btn btn-success" disabled>
@@ -98,7 +109,7 @@ function ShowSchemePage() {
             <button
               className="btn btn-primary"
               onClick={handleApply}
-              // disabled={applying}
+            // disabled={applying}
             >
               {applying ? (
                 <>

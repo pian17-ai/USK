@@ -65,10 +65,10 @@ export default function useCandidate() {
         }
     }, []);
 
-    const updateProfile = useCallback( async(payload: UpdateProfilePayload, username: string) => {
+    const updateProfile = useCallback( async(payload: UpdateProfilePayload, id: string | number) => {
         try {
             setLoading(true);
-            await updateProfileAPI(payload, username)
+            await updateProfileAPI(payload, id)
         } catch (err) {
             console.error(err);
         } finally {

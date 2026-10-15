@@ -10,7 +10,8 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    public function registerAdm(Request $request) {
+    public function registerAdm(Request $request)
+    {
         $validated = $request->validate([
             'username' => 'required',
             'password' => 'required|min:6'

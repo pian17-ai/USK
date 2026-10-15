@@ -19,6 +19,7 @@ export default function ProfilePage() {
 
   const [isEdit, setIsEdit] = useState(false);
   const [errors, setErrors] = useState<FormErrors>({});
+  const [success, setSuccess] = useState(false);
 
   const userData = localStorage.getItem("user");
   const userId = JSON.parse(userData!);
@@ -47,6 +48,7 @@ export default function ProfilePage() {
   };
 
   const handleEdit = () => {
+    setSuccess(false);
     setIsEdit(true);
     setErrors({});
     setForm({
@@ -68,7 +70,8 @@ export default function ProfilePage() {
     setErrors(validationErrors);
     if (hasErrors(validationErrors)) return;
 
-    await updateProfile(form, userId.username);
+    await updateProfile(form, userId.id);
+    setSuccess(true);
     getUser(userId?.id);
     setIsEdit(false);
   };
@@ -91,319 +94,325 @@ export default function ProfilePage() {
           <p className="text-secondary mb-0">Informasi akun dan data pribadi</p>
         </div>
 
+
         <button onClick={() => handleEdit()} className="btn btn-primary">
           Edit Profil
         </button>
       </div>
+      {
+        success && (
+          <p className="alert alert-success">Ubah data sukses</p>
+        )
+      }
       <div className="card border-0 shadow-sm">
         <form onSubmit={handleSubmit}>
-        {!isEdit && (
-          <div className="card-body p-4">
-            <div className="mb-4">
-              <div>
-                <h4 className="fw-bold mb-1">
-                  {candidate?.full_name || "Nama belum tersedia"}
-                </h4>
+          {!isEdit && (
+            <div className="card-body p-4">
+              <div className="mb-4">
+                <div>
+                  <h4 className="fw-bold mb-1">
+                    {candidate?.full_name || "Nama belum tersedia"}
+                  </h4>
 
-                <p className="text-secondary mb-2">{user?.username}</p>
+                  <p className="text-secondary mb-2">{user?.username}</p>
 
-                <span className="badge text-bg-primary">
-                  {user?.role || "user"}
-                </span>
+                  <span className="badge text-bg-primary">
+                    {user?.role || "user"}
+                  </span>
+                </div>
               </div>
+
+              <hr />
+
+              <h5 className="fw-semibold mb-3">Informasi Pribadi</h5>
+
+              <div className="row g-4">
+                <div className="col-md-6">
+                  <div className="text-secondary small mb-1">Nama Lengkap</div>
+                  <div className="fw-medium text-break">
+                    {candidate?.full_name || "-"}
+                  </div>
+                </div>
+
+                <div className="col-md-6">
+                  <div className="text-secondary small mb-1">Username</div>
+                  <div className="fw-medium text-break">
+                    {user?.username || "-"}
+                  </div>
+                </div>
+
+                <div className="col-md-6">
+                  <div className="text-secondary small mb-1">NIK</div>
+                  <div className="fw-medium text-break">
+                    {candidate?.nik ?? "-"}
+                  </div>
+                </div>
+
+                <div className="col-md-6">
+                  <div className="text-secondary small mb-1">Email</div>
+                  <div className="fw-medium text-break">
+                    {candidate?.email || "-"}
+                  </div>
+                </div>
+
+                <div className="col-md-6">
+                  <div className="text-secondary small mb-1">Nomor HP</div>
+                  <div className="fw-medium text-break">
+                    0{candidate?.phone_number ? `${candidate.phone_number}` : "-"}
+                  </div>
+                </div>
+
+                <div className="col-md-6">
+                  <div className="text-secondary small mb-1">Tanggal Lahir</div>
+                  <div className="fw-medium">
+                    {candidate?.born_date ? candidate.born_date : "-"}
+                  </div>
+                </div>
+
+                <div className="col-md-6">
+                  <div className="text-secondary small mb-1">Jenis Kelamin</div>
+                  <div className="fw-medium">
+                    {candidate?.gender === "male"
+                      ? "Laki-laki"
+                      : candidate?.gender === "female"
+                        ? "Perempuan"
+                        : candidate?.gender || "-"}
+                  </div>
+                </div>
+
+                <div className="col-md-6">
+                  <div className="text-secondary small mb-1">
+                    Skema Sertifikasi
+                  </div>
+                  <div className="fw-medium">
+                    {candidate?.certification_scheme?.scheme_name ??
+                      "Belum memilih skema"}
+                  </div>
+                </div>
+
+                <div className="col-12">
+                  <div className="text-secondary small mb-1">Alamat</div>
+                  <div className="fw-medium text-break">
+                    {candidate?.address || "-"}
+                  </div>
+                </div>
+              </div>
+
+              <hr />
+
+              <button
+                onClick={() =>
+                  confirm("Apakah kamu yakin ingin logout?") && handleLogout()
+                }
+                className="btn btn-danger"
+              >
+                Logout
+              </button>
             </div>
+          )}
 
-            <hr />
+          {isEdit && (
+            <div className="card-body p-4">
+              <div className="mb-4">
+                <div>
+                  <h4 className="fw-bold mb-1">
+                    {candidate?.full_name || "Nama belum tersedia"}
+                  </h4>
 
-            <h5 className="fw-semibold mb-3">Informasi Pribadi</h5>
+                  <p className="text-secondary mb-2">{user?.username}</p>
 
-            <div className="row g-4">
-              <div className="col-md-6">
-                <div className="text-secondary small mb-1">Nama Lengkap</div>
-                <div className="fw-medium text-break">
-                  {candidate?.full_name || "-"}
+                  <span className="badge text-bg-primary">
+                    {user?.role || "user"}
+                  </span>
                 </div>
               </div>
 
-              <div className="col-md-6">
-                <div className="text-secondary small mb-1">Username</div>
-                <div className="fw-medium text-break">
-                  {user?.username || "-"}
+              <hr />
+
+              <h5 className="fw-semibold mb-3">Informasi Pribadi</h5>
+
+              <div className="row g-4">
+                <div className="col-md-6">
+                  <div className="text-secondary small mb-1">Nama Lengkap</div>
+                  <div className="fw-medium text-break">
+                    <input
+                      onChange={handleChanges}
+                      id="full_name"
+                      value={form.full_name}
+                      type="text"
+                      name="full_name"
+                      className={`form-control ${fieldClass(errors, "full_name")}`}
+                      placeholder="Nama Lengkap"
+                    />
+
+                    {errors.full_name && (
+                      <div className="invalid-feedback">{errors.full_name}</div>
+                    )}
+                  </div>
+                </div>
+
+                <div className="col-md-6">
+                  <div className="text-secondary small mb-1">Username</div>
+                  <div className="fw-medium text-break">
+                    <input
+                      onChange={handleChanges}
+                      id="username"
+                      value={form.username}
+                      type="text"
+                      name="username"
+                      className={`form-control ${fieldClass(errors, "username")}`}
+                      placeholder="Username"
+                    />
+
+                    {errors.username && (
+                      <div className="invalid-feedback">{errors.username}</div>
+                    )}
+                  </div>
+                </div>
+
+                <div className="col-md-6">
+                  <div className="text-secondary small mb-1">NIK</div>
+                  <div className="fw-medium text-break">
+                    <input
+                      onChange={handleChanges}
+                      id="nik"
+                      value={form.nik}
+                      type="text"
+                      name="nik"
+                      className={`form-control ${fieldClass(errors, "nik")}`}
+                      placeholder="NIK"
+                    />
+
+                    {errors.nik && (
+                      <div className="invalid-feedback">{errors.nik}</div>
+                    )}
+                  </div>
+                </div>
+
+                <div className="col-md-6">
+                  <div className="text-secondary small mb-1">Email</div>
+                  <div className="fw-medium text-break">
+                    <input
+                      onChange={handleChanges}
+                      id="email"
+                      value={form.email}
+                      type="text"
+                      name="email"
+                      className={`form-control ${fieldClass(errors, "email")}`}
+                      placeholder="example@gmail.com"
+                    />
+
+                    {errors.email && (
+                      <div className="invalid-feedback">{errors.email}</div>
+                    )}
+                  </div>
+                </div>
+
+                <div className="col-md-6">
+                  <div className="text-secondary small mb-1">Nomor HP</div>
+                  <div className="fw-medium text-break">
+                    <input
+                      onChange={handleChanges}
+                      id="phone_number"
+                      value={form.phone_number}
+                      type="text"
+                      name="phone_number"
+                      className={`form-control ${fieldClass(errors, "phone_number")}`}
+                      placeholder="08XXXXXXX.."
+                    />
+
+                    {errors.phone_number && (
+                      <div className="invalid-feedback">
+                        {errors.phone_number}
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <div className="col-md-6">
+                  <div className="text-secondary small mb-1">Tanggal Lahir</div>
+                  <div className="fw-medium">
+                    <input
+                      onChange={handleChanges}
+                      id="born_date"
+                      value={form.born_date}
+                      type="date"
+                      name="born_date"
+                      className={`form-control ${fieldClass(errors, "born_date")}`}
+                    />
+
+                    {errors.born_date && (
+                      <div className="invalid-feedback">{errors.born_date}</div>
+                    )}
+                  </div>
+                </div>
+
+                <div className="col-md-6">
+                  <div className="text-secondary small mb-1">Jenis Kelamin</div>
+                  <div className="fw-medium">
+                    <select
+                      onChange={handleChanges}
+                      id="gender"
+                      value={form.gender}
+                      name="gender"
+                      className={`form-select ${fieldClass(errors, "gender")}`}
+                    >
+                      <option value="male">Laki-laki</option>
+                      <option value="female">Perempuan</option>
+                    </select>
+
+                    {errors.gender && (
+                      <div className="invalid-feedback">{errors.gender}</div>
+                    )}
+                  </div>
+                </div>
+
+                <div className="col-md-6">
+                  <div className="text-secondary small mb-1">
+                    Skema Sertifikasi
+                  </div>
+                  <div className="fw-medium">
+                    {candidate?.certification_scheme?.scheme_name ??
+                      "Belum memilih skema"}
+                  </div>
+                </div>
+
+                <div className="col-12">
+                  <div className="text-secondary small mb-1">Alamat</div>
+                  <div className="fw-medium text-break">
+                    <input
+                      onChange={handleChanges}
+                      id="address"
+                      value={form.address}
+                      type="text"
+                      name="address"
+                      className={`form-control ${fieldClass(errors, "address")}`}
+                      placeholder="Address.."
+                    />
+
+                    {errors.address && (
+                      <div className="invalid-feedback">{errors.address}</div>
+                    )}
+                  </div>
                 </div>
               </div>
 
-              <div className="col-md-6">
-                <div className="text-secondary small mb-1">NIK</div>
-                <div className="fw-medium text-break">
-                  {candidate?.nik ?? "-"}
-                </div>
-              </div>
+              <hr />
 
-              <div className="col-md-6">
-                <div className="text-secondary small mb-1">Email</div>
-                <div className="fw-medium text-break">
-                  {candidate?.email || "-"}
-                </div>
-              </div>
-
-              <div className="col-md-6">
-                <div className="text-secondary small mb-1">Nomor HP</div>
-                <div className="fw-medium text-break">
-                  {candidate?.phone_number ? `${candidate.phone_number}` : "-"}
-                </div>
-              </div>
-
-              <div className="col-md-6">
-                <div className="text-secondary small mb-1">Tanggal Lahir</div>
-                <div className="fw-medium">
-                  {candidate?.born_date ? candidate.born_date : "-"}
-                </div>
-              </div>
-
-              <div className="col-md-6">
-                <div className="text-secondary small mb-1">Jenis Kelamin</div>
-                <div className="fw-medium">
-                  {candidate?.gender === "male"
-                    ? "Laki-laki"
-                    : candidate?.gender === "female"
-                      ? "Perempuan"
-                      : candidate?.gender || "-"}
-                </div>
-              </div>
-
-              <div className="col-md-6">
-                <div className="text-secondary small mb-1">
-                  Skema Sertifikasi
-                </div>
-                <div className="fw-medium">
-                  {candidate?.certification_scheme?.scheme_name ??
-                    "Belum memilih skema"}
-                </div>
-              </div>
-
-              <div className="col-12">
-                <div className="text-secondary small mb-1">Alamat</div>
-                <div className="fw-medium text-break">
-                  {candidate?.address || "-"}
-                </div>
-              </div>
+              <button
+                type="submit"
+                className="btn btn-success"
+              >
+                Save
+              </button>
+              <button
+                onClick={() => setIsEdit(false)}
+                className="btn btn-warning mx-2"
+              >
+                Cancel
+              </button>
             </div>
-
-            <hr />
-
-            <button
-              onClick={() =>
-                confirm("Apakah kamu yakin ingin logout?") && handleLogout()
-              }
-              className="btn btn-danger"
-            >
-              Logout
-            </button>
-          </div>
-        )}
-
-        {isEdit && (
-          <div className="card-body p-4">
-            <div className="mb-4">
-              <div>
-                <h4 className="fw-bold mb-1">
-                  {candidate?.full_name || "Nama belum tersedia"}
-                </h4>
-
-                <p className="text-secondary mb-2">{user?.username}</p>
-
-                <span className="badge text-bg-primary">
-                  {user?.role || "user"}
-                </span>
-              </div>
-            </div>
-
-            <hr />
-
-            <h5 className="fw-semibold mb-3">Informasi Pribadi</h5>
-
-            <div className="row g-4">
-              <div className="col-md-6">
-                <div className="text-secondary small mb-1">Nama Lengkap</div>
-                <div className="fw-medium text-break">
-                  <input
-                    onChange={handleChanges}
-                    id="full_name"
-                    value={form.full_name}
-                    type="text"
-                    name="full_name"
-                    className={`form-control ${fieldClass(errors, "full_name")}`}
-                    placeholder="Nama Lengkap"
-                  />
-
-                  {errors.full_name && (
-                    <div className="invalid-feedback">{errors.full_name}</div>
-                  )}
-                </div>
-              </div>
-
-              <div className="col-md-6">
-                <div className="text-secondary small mb-1">Username</div>
-                <div className="fw-medium text-break">
-                  <input
-                    onChange={handleChanges}
-                    id="username"
-                    value={form.username}
-                    type="text"
-                    name="username"
-                    className={`form-control ${fieldClass(errors, "username")}`}
-                    placeholder="Username"
-                  />
-
-                  {errors.username && (
-                    <div className="invalid-feedback">{errors.username}</div>
-                  )}
-                </div>
-              </div>
-
-              <div className="col-md-6">
-                <div className="text-secondary small mb-1">NIK</div>
-                <div className="fw-medium text-break">
-                  <input
-                    onChange={handleChanges}
-                    id="nik"
-                    value={form.nik}
-                    type="text"
-                    name="nik"
-                    className={`form-control ${fieldClass(errors, "nik")}`}
-                    placeholder="NIK"
-                  />
-
-                  {errors.nik && (
-                    <div className="invalid-feedback">{errors.nik}</div>
-                  )}
-                </div>
-              </div>
-
-              <div className="col-md-6">
-                <div className="text-secondary small mb-1">Email</div>
-                <div className="fw-medium text-break">
-                  <input
-                    onChange={handleChanges}
-                    id="email"
-                    value={form.email}
-                    type="text"
-                    name="email"
-                    className={`form-control ${fieldClass(errors, "email")}`}
-                    placeholder="example@gmail.com"
-                  />
-
-                  {errors.email && (
-                    <div className="invalid-feedback">{errors.email}</div>
-                  )}
-                </div>
-              </div>
-
-              <div className="col-md-6">
-                <div className="text-secondary small mb-1">Nomor HP</div>
-                <div className="fw-medium text-break">
-                  <input
-                    onChange={handleChanges}
-                    id="phone_number"
-                    value={form.phone_number}
-                    type="text"
-                    name="phone_number"
-                    className={`form-control ${fieldClass(errors, "phone_number")}`}
-                    placeholder="08XXXXXXX.."
-                  />
-
-                  {errors.phone_number && (
-                    <div className="invalid-feedback">
-                      {errors.phone_number}
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              <div className="col-md-6">
-                <div className="text-secondary small mb-1">Tanggal Lahir</div>
-                <div className="fw-medium">
-                  <input
-                    onChange={handleChanges}
-                    id="born_date"
-                    value={form.born_date}
-                    type="date"
-                    name="born_date"
-                    className={`form-control ${fieldClass(errors, "born_date")}`}
-                  />
-
-                  {errors.born_date && (
-                    <div className="invalid-feedback">{errors.born_date}</div>
-                  )}
-                </div>
-              </div>
-
-              <div className="col-md-6">
-                <div className="text-secondary small mb-1">Jenis Kelamin</div>
-                <div className="fw-medium">
-                  <select
-                    onChange={handleChanges}
-                    id="gender"
-                    value={form.gender}
-                    name="gender"
-                    className={`form-select ${fieldClass(errors, "gender")}`}
-                  >
-                    <option value="male">Laki-laki</option>
-                    <option value="female">Perempuan</option>
-                  </select>
-
-                  {errors.gender && (
-                    <div className="invalid-feedback">{errors.gender}</div>
-                  )}
-                </div>
-              </div>
-
-              <div className="col-md-6">
-                <div className="text-secondary small mb-1">
-                  Skema Sertifikasi
-                </div>
-                <div className="fw-medium">
-                  {candidate?.certification_scheme?.scheme_name ??
-                    "Belum memilih skema"}
-                </div>
-              </div>
-
-              <div className="col-12">
-                <div className="text-secondary small mb-1">Alamat</div>
-                <div className="fw-medium text-break">
-                  <input
-                    onChange={handleChanges}
-                    id="address"
-                    value={form.address}
-                    type="text"
-                    name="address"
-                    className={`form-control ${fieldClass(errors, "address")}`}
-                    placeholder="Address.."
-                  />
-
-                  {errors.address && (
-                    <div className="invalid-feedback">{errors.address}</div>
-                  )}
-                </div>
-              </div>
-            </div>
-
-            <hr />
-
-            <button
-              type="submit"
-              className="btn btn-success"
-            >
-              Save
-            </button>
-            <button
-              onClick={() => setIsEdit(false)}
-              className="btn btn-warning mx-2"
-            >
-              Cancel
-            </button>
-          </div>
-        )}
+          )}
         </form>
       </div>
     </div>

@@ -142,7 +142,7 @@ class CandidateController extends Controller
         ]);
     }
 
-    public function update_profile(Request $request, string $username)
+    public function update_profile(Request $request, $id)
     {
         $validated = $request->validate([
             'username' => 'nullable|string|regex:/^[a-zA-Z ]{1,50}+$/',
@@ -157,7 +157,7 @@ class CandidateController extends Controller
 
         $user = $request->user();
 
-        if ($user->username !== $username) {
+        if ($user->id !== $id) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Access forbidden'
